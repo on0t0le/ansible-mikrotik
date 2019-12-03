@@ -1,0 +1,9 @@
+[all:vars]
+ansible_connection=network_cli
+ansible_network_os=routeros
+ansible_port=22
+ansible_user=username
+ansible_ssh_pass=your_strong_password
+
+[mikrotik]
+home ansible_host=192.1168.1.1

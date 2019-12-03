@@ -1,0 +1,20 @@
+- hosts: mikrotik
+  gather_facts: false
+
+  tasks:
+  - name: ping all
+    ping:
+    register: ping_result
+
+  - name: show ping result 
+    debug:
+      var: ping_result
+
+  - name: run command on remote devices
+    routeros_command:
+      commands: /system routerboard print
+    register: router_command_result
+
+  - name: show router command result 
+    debug:
+      var: router_command_result
