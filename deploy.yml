@@ -17,3 +17,6 @@
   - name: copy pub key
     command: "sshpass -p {{ ansible_ssh_pass }} scp -P {{ ansible_port }} keys/mikrotik.pub {{ ansible_user }}@{{ ansible_host }}:onotole.pub"
 
+  - name: add ssh-key for user
+    routeros_command:
+      commands: /user ssh-keys import public-key-file=onotole.pub user=onotole
