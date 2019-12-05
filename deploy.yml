@@ -1,7 +1,4 @@
 - hosts: mikrotik
-  vars:
-    ansible_connection: network_cli
-    ansible_network_os: routeros
   gather_facts: false
 
   tasks:
@@ -17,12 +14,6 @@
     routeros_command:
       commands: /ip ssh set always-allow-password-login=yes
 
-- hosts: mikrotik
-  vars:
-    ansible_connection: ssh
-    
-  tasks:
   - name: copy pub key
-    copy:
-      src: keys/mikrotik.pub
-      dest: /skins/onotole.pub
+    command: "sshpass -p {{ ansible_ssh_pass }} scp -P {{ ansible_port }} keys/mikrotik.pub {{ ansible_user }}@{{ ansible_host }}:onotole.pub"
+
