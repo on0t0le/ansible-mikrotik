@@ -1,26 +1,28 @@
 - hosts: mikrotik
   gather_facts: false
+  vars_files:
+  - vars/vars.yml
 
   tasks:
   - name: add group
     routeros_command:
       commands: 
-        - /user group add name=ssh
+        - "/user group add name={{ group.name }}"
 
   - name: add group
     routeros_command:
       commands: 
-        - /user group add name=ssh
+        - "/user group add name={{ group.name }}"
      
   - name: set group policy
     routeros_command:
       commands: 
-        - /user group set ssh policy=!local,ssh,read,write,!telnet,!ftp,!reboot,!policy,!test,!winbox,!password,!web,!sniff,!sensitive,!api,!romon,!dude,!tikapp
+        - /user group set {{ group.name }} policy={{ group.policy }}
 
   - name: add user
     routeros_command:
       commands: 
-        - /user add name=onotole password=password1 group=ssh  
+        - "/user add name={{ user.name }} password={{ user.pwd }} group={{ user.group }}"
   
   - name: alow ssh key and password
     routeros_command:
@@ -28,9 +30,9 @@
         - /ip ssh set always-allow-password-login=yes
 
   - name: copy pub key
-    command: "sshpass -p {{ ansible_ssh_pass }} scp -P {{ ansible_port }} keys/mikrotik.pub {{ ansible_user }}@{{ ansible_host }}:onotole.pub"
+    command: "sshpass -p {{ ansible_ssh_pass }} scp -P {{ ansible_port }} {{ user.key }} {{ ansible_user }}@{{ ansible_host }}:{{ user.name }}.pub"
 
   - name: add ssh-key for user
     routeros_command:
       commands: 
-        - /user ssh-keys import public-key-file=onotole.pub user=onotole
+        - "/user ssh-keys import public-key-file={{ user.name }}.pub user={{ user.name }}"

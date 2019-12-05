@@ -1,0 +1,9 @@
+group:
+  name: 'group_name'
+  policy: '!local,ssh,read,write,!telnet,!ftp,!reboot,!policy,!test,!winbox,!password,!web,!sniff,!sensitive,!api,!romon,!dude,!tikapp'
+
+user:
+  name: 'user_name'
+  pwd: 'strong_password'
+  group: 'group_name'
+  key: 'keys/user_name.pub'
