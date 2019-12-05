@@ -2,19 +2,12 @@
   gather_facts: false
 
   tasks:
-  - name: ping all
-    ping:
-    register: ping_result
-
-  - name: show ping result 
-    debug:
-      var: ping_result
-
-  - name: run command on remote devices
+  - name: add group
     routeros_command:
-      commands: /system routerboard print
-    register: router_command_result
+      commands: /user group add name=ssh policy=ssh,read,write
 
-  - name: show router command result 
-    debug:
-      var: router_command_result
+  - name: add user
+    routeros_command:
+      commands: /user add name=onotole password=password1 group=ssh  
+
+  

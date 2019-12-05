@@ -1,4 +1,5 @@
 !.gitignore
 **/vars/*
 **/inv/*
+**/keys/*
 !*.dist
