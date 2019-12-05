@@ -6,11 +6,16 @@
     routeros_command:
       commands: 
         - /user group add name=ssh
+
+  - name: add group
+    routeros_command:
+      commands: 
+        - /user group add name=ssh
      
   - name: set group policy
     routeros_command:
       commands: 
-        - /user group set ssh policy=ssh,read,write,local
+        - /user group set ssh policy=!local,ssh,read,write,!telnet,!ftp,!reboot,!policy,!test,!winbox,!password,!web,!sniff,!sensitive,!api,!romon,!dude,!tikapp
 
   - name: add user
     routeros_command:
