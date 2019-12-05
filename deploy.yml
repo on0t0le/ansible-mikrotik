@@ -29,10 +29,24 @@
       commands: 
         - /ip ssh set always-allow-password-login=yes
 
-  - name: copy pub key
-    command: "sshpass -p {{ ansible_ssh_pass }} scp -P {{ ansible_port }} {{ user.key }} {{ ansible_user }}@{{ ansible_host }}:{{ user.name }}.pub"
+  - name: copy ssh key
+    block: 
+      - name: check key 
+        routeros_command:
+          commands: 
+            - "/user ssh-keys print where user={{ user.name }}"
+          wait_for:
+            - "result[0] contains {{ user.name }}"
+    rescue:
+      - name: copy pub key
+        command: "sshpass -p {{ ansible_ssh_pass }} scp -P {{ ansible_port }} {{ user.key }} {{ ansible_user }}@{{ ansible_host }}:{{ user.name }}.pub"
 
-  - name: add ssh-key for user
-    routeros_command:
-      commands: 
-        - "/user ssh-keys import public-key-file={{ user.name }}.pub user={{ user.name }}"
+      - name: add ssh-key for user
+        routeros_command:
+          commands: 
+            - "/user ssh-keys import public-key-file={{ user.name }}.pub user={{ user.name }}"
+
+  - name: print smth
+    debug:
+      msg: "All is ok"
+  
