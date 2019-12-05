@@ -9,5 +9,12 @@
   - name: add user
     routeros_command:
       commands: /user add name=onotole password=password1 group=ssh  
-
   
+  - name: alow ssh key and password
+    routeros_command:
+      commands: /ip ssh set always-allow-password-login=yes
+
+  - name: copy pub key
+    copy:
+      src: keys/mikrotik.pub
+      dest: /skins
